@@ -2,10 +2,13 @@ const express = require("express");
 
 const router = express.Router();
 const Blog   = require('../models/blog');
+const limitString = require('../helper/limitString');
 
-router.get("/", (req, res) => {
+
+router.get("/", async (req, res) => {
+  const data = await Blog.find();
   try {
-    res.render("home");
+    res.render("home" , {data , limitString});
   } catch (error) {
     res.status(500).send("Server error");
   }
@@ -19,13 +22,5 @@ router.get("/about", (req, res) => {
   }
 });
 
-router.get('/blog', async (req, res) => {
-   try{
-      const blog = await Blog.find();
-      res.json(blog);
-   }catch(err){
-      res.status(500).send('Server error');
-   }
-});
 
 module.exports = router;
