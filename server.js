@@ -4,10 +4,11 @@ const app = express();
 const route = require("./routes/route");
 const expressLayouts = require("express-ejs-layouts");
 const morgan = require("morgan");
+const bodyParser = require("body-parser");
 const port = 3000;
 
-const mongoDbUrl =
-  "mongodb+srv://htetmyat:7V70O87lYMlCog05@blog.0ju07.mongodb.net/?retryWrites=true&w=majority&appName=blog";
+require("dotenv").config();
+const mongoDbUrl = process.env.MONGODB_URL;
 
 mongoose
   .connect(mongoDbUrl)
@@ -29,7 +30,7 @@ app.set("layout", "layout/main");
 app.set("views", "views");
 // Use express layouts as middleware
 app.use(expressLayouts);
-
+app.use(bodyParser.json() , bodyParser.urlencoded({extended: true}));
 app.use(morgan("dev"));
 app.use(express.static("public"));
 app.use(express.static("views"));
